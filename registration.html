@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="container">
+
+    <div class="form-box">
+        <h2>Enter Info</h2>
+        <input type="text" id="fname" placeholder="First Name"><br><br>
+        <input type="text" id="mname" placeholder="Middle Name"><br><br>
+        <input type="text" id="lname" placeholder="Last Name"><br><br>
+        <input type="number" id="age" placeholder="Age"><br><br>
+        <input type="text" id="email" placeholder="Email"><br><br>
+        <button id="submitBtn">Submit</button>
+    </div>
+
+     <div class="list-box">
+        <h2>Saved Info</h2>
+       <tableborder="1">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+    </div>     
+<script>
+  let userRecordStack = [];
+
+document.getElementById("submitBtn").addEventListener("click", addRecord);
+
+function addRecord() {
+
+  const newUser = {
+    firstName: document.getElementById('fname').value.trim(),
+    middleName: document.getElementById('mname').value.trim(),
+    lastName: document.getElementById('lname').value.trim(),
+    userAge: document.getElementById('age').value.trim(),
+    userEmail: document.getElementById('email').value.trim()
+  };
+
+  if (!newUser.firstName || !newUser.lastName || !newUser.userAge || !newUser.userEmail) {
+    alert("Missing Fields!\nAll required inputs must be completed.");
+    return;
+  }
+
+  if (isNaN(newUser.userAge) || newUser.userAge < 1 || newUser.userAge > 120) {
+    alert("Invalid Age!\nAge must be between 1 and 120 only.");
+    return;
+  }
+
+  alert("Saved Successfully!\nUser record has been added.");
+
+  userRecordStack.push(newUser);
+  displayTable();
+  resetForm();
+}
+
+function displayTable() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = "";
+
+  for (let index = userRecordStack.length - 1; index >= 0; index--) {
+
+    const data = userRecordStack[index];
+
+    let row = `
+      <tr>
+        <td>${data.firstName}</td>
+        <td>${data.middleName}</td>
+        <td>${data.lastName}</td>
+        <td>${data.userAge}</td>
+        <td>${data.userEmail}</td>
+      </tr>
+    `;
+
+    tbody.innerHTML += row;
+  }
+}
+
+function resetForm() {
+  document.getElementById('fname').value = "";
+  document.getElementById('mname').value = "";
+  document.getElementById('lname').value = "";
+  document.getElementById('age').value = "";
+  document.getElementById('email').value = "";
+}
+
+</script>
+</body>
+</html>
